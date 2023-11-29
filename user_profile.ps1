@@ -92,14 +92,18 @@ function hist { nvim "C:\Users\Mkh\AppData\Roaming\Microsoft\Windows\PowerShell\
 # {yt-dlp -x --audio-format mp3 --output '%(playlist_index)s-%(title)s.%(ext)s' $link
 function yymp3 ($link) { yt-dlp -x --audio-format mp3 --output '%(title)s.%(ext)s' $link }
 function yy ($url) { yt-dlp -f "best[height<=720]" $url }
-function sourceerror { Set-Location "D:\sourceerror" }
-function fuck { Write-Output "Fuck Yeah"; }
+function who { Write-Output "Mkh's"; }
 Function ex { explorer.exe . }
 Function rc { Start-Process shell:RecycleBinFolder}
 Function m { mpv --vo=null --video=no --no-video --term-osd-bar --no-resume-playback --shuffle $args }
 Function mplay { mpv --vo=null --video=no --no-video --term-osd-bar --no-resume-playback $args }
 Function mm { mpv --vo=null --video=no --no-video --term-osd-bar --no-resume-playback --shuffle "C:\Users\Mkh\Music" }
 function cdm { Set-Location C:\Users\Mkh\Music }
+# browsers 
+function edge { & "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"}
+function fox { & "C:\Program Files\Mozilla Firefox\firefox.exe"}
+function icc {& "C:\Program Files\IceCat\icecat.exe"}
+function tor {& "C:\Users\Mkh\OneDrive\Desktop\Browser\Tor Browser\Browser\firefox.exe"}
 
 
 function prompt {
