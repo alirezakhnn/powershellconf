@@ -99,10 +99,49 @@ Function m { mpv --vo=null --video=no --no-video --term-osd-bar --no-resume-play
 Function mplay { mpv --vo=null --video=no --no-video --term-osd-bar --no-resume-playback $args }
 Function mm { mpv --vo=null --video=no --no-video --term-osd-bar --no-resume-playback --shuffle "C:\Users\Mkh\Music" }
 function cdm { Set-Location C:\Users\Mkh\Music }
+function zip {
+    param (
+        [Parameter(Mandatory = $true)]
+        [ValidateScript({Test-Path $_ -PathType 'Container'})]
+        [string]$FolderPath,
+        
+        [Parameter(Mandatory = $true)]
+        [ValidateScript({$_ -match '\.zip$'})]
+        [string]$ZipFilePath
+    )
+    
+    Compress-Archive -Path $FolderPath -DestinationPath $ZipFilePath
+}
+
+function unzip {
+    param (
+        [Parameter(Mandatory = $true)]
+        [ValidateScript({Test-Path $_ -PathType 'Leaf'})]
+        [string]$ZipFilePath,
+        
+        [Parameter(Mandatory = $true)]
+        [ValidateScript({Test-Path (Split-Path $_) -PathType 'Container'})]
+        [string]$DestinationFolderPath
+    )
+    
+    Expand-Archive -Path $ZipFilePath -DestinationPath $DestinationFolderPath
+}
 # browsers 
-function edge { & "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"}
-function fox { & "C:\Program Files\Mozilla Firefox\firefox.exe"}
-function icc {& "C:\Program Files\IceCat\icecat.exe"}
+function edge {
+    param([string]$query)
+    & "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" "https://www.bing.com/search?q=$query"
+}
+
+function fox {
+        param([string]$query)
+        & "C:\Program Files\Mozilla Firefox\firefox.exe" "https://www.duckduckgo.com/search?q=$query"
+    }
+
+function icc {
+    param([string]$query)
+    & "C:\Program Files\IceCat\icecat.exe" "https://www.duckduckgo.com/search?q=$query"
+    }
+
 function tor {& "C:\Users\Mkh\OneDrive\Desktop\Browser\Tor Browser\Browser\firefox.exe"}
 
 
