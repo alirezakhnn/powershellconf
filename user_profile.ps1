@@ -3,7 +3,7 @@
 
 Import-Module posh-git
 $omp_config = Join-Path $PSScriptRoot ".\takuya.omp.json"
-oh-my-posh --init --shell pwsh --config $omp_config | Invoke-Expression
+# oh-my-posh --init --shell pwsh --config $omp_config | Invoke-Expression
 
 Import-Module -Name Terminal-Icons
 
@@ -34,16 +34,16 @@ function which ($command) {
     Select-Object -ExpandProperty Path -ErrorAction SilentlyContinue
 }
 
-Import-Module oh-my-posh
-set-PoshPrompt 'M365Princess'
-$omp_config = Join-Path $PSScriptRoot ".\takuya.omp.json"
-oh-my-posh --init --shell pwsh --config $omp_config | Invoke-Expression
+# Import-Module oh-my-posh
+function princ {set-PoshPrompt 'M365Princess'}
+# $omp_config = Join-Path $PSScriptRoot ".\takuya.omp.json"
+# oh-my-posh --init --shell pwsh --config $omp_config | Invoke-Expression
 
 
 # Load prompt config
 function Get-ScriptDirectory { Split-Path $MyInvocation.ScriptName }
 $PROMPT_CONFIG = Join-Path (Get-ScriptDirectory) 'takuya.omp.json'
-oh-my-posh --init --shell pwsh --config $PROMPT_CONFIG | Invoke-Expression
+# oh-my-posh --init --shell pwsh --config $PROMPT_CONFIG | Invoke-Expression
 
 # Icons
 Import-Module -Name Terminal-Icons
@@ -81,24 +81,54 @@ function which ($command) {
 function getName {wmic "csproduct get name"}
 function schrome {chrome.exe --user-data-dir="C:/Chrome dev session" --disable-web-security}
 function thb { & "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" 'https://beta.theb.ai/home'}
+function chg {& "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" "https://start.chatgot.io/"}
 function fcs { curl "https://wttr.in/tonekabon" }
 function fcs2 { curl "https://v2.wttr.in/tonekabon" }
 function des { Set-Location "C:\Users\Mkh\OneDrive\Desktop\" }
 function which($command) { Get-Command -Name $command -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Path -ErrorAction SilentlyContinue }
 function psconf { nvim "C:\Users\Mkh\.config\powershell\user_profile.ps1" }
+function psloc { Set-Location "C:\Users\Mkh\.config\powershell\"}
 function nvconf { nvim "C:\Users\Mkh\AppData\Local\nvim\init.lua" }
 function nvfold { Set-Location C:\Users\Mkh\AppData\Local\nvim }
 function hist { nvim "C:\Users\Mkh\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt" }
 # {yt-dlp -x --audio-format mp3 --output '%(playlist_index)s-%(title)s.%(ext)s' $link
+function ytb {
+    param(
+        [string]$query
+    )
+    $encodedQuery = [uri]::EscapeDataString($query)
+    $searchUrl = "https://www.youtube.com/results?search_query=$encodedQuery"
+    Start-Process "firefox.exe" -ArgumentList $searchUrl
+}
 function yymp3 ($link) { yt-dlp -x --audio-format mp3 --output '%(title)s.%(ext)s' $link }
 function yy ($url) { yt-dlp -f "best[height<=720]" $url }
 function who { Write-Output "Mkh's"; }
 Function ex { explorer.exe . }
 Function rc { Start-Process shell:RecycleBinFolder}
-Function m { mpv --vo=null --video=no --no-video --term-osd-bar --no-resume-playback --shuffle $args }
-Function mplay { mpv --vo=null --video=no --no-video --term-osd-bar --no-resume-playback $args }
-Function mm { mpv --vo=null --video=no --no-video --term-osd-bar --no-resume-playback --shuffle "C:\Users\Mkh\Music" }
+# Function m { mpv --vo=null --video=no --no-video --term-osd-bar --no-resume-playback --shuffle $args }
+# Function mplay { mpv --vo=null --video=no --no-video --term-osd-bar --no-resume-playback $args }
+# Function mm { mpv --vo=null --video=no --no-video --term-osd-bar --no-resume-playback --shuffle "C:\Users\Mkh\Music" }
 function cdm { Set-Location C:\Users\Mkh\Music }
+
+function pot {
+    param (
+        [string]$VideoPath   # Parameter to take the path of the video file
+    )
+    
+    $PotPlayerPath = "C:\Program Files\DAUM\PotPlayer\PotPlayerMini64.exe"
+    
+    # Check if PotPlayer executable exists
+    if (Test-Path $PotPlayerPath) {
+        # Check if the specified video file exists
+        if (Test-Path $VideoPath) {
+            Start-Process -FilePath $PotPlayerPath -ArgumentList $VideoPath
+        } else {
+            Write-Host "Video file does not exist: $VideoPath"
+        }
+    } else {
+        Write-Host "PotPlayer is not found at the specified path: $PotPlayerPath"
+    }
+}
 function zip {
     param (
         [Parameter(Mandatory = $true)]
@@ -112,7 +142,6 @@ function zip {
     
     Compress-Archive -Path $FolderPath -DestinationPath $ZipFilePath
 }
-
 function unzip {
     param (
         [Parameter(Mandatory = $true)]
@@ -126,24 +155,49 @@ function unzip {
     
     Expand-Archive -Path $ZipFilePath -DestinationPath $DestinationFolderPath
 }
+
 # browsers 
 function edge {
     param([string]$query)
     & "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" "https://www.bing.com/search?q=$query"
 }
-
 function fox {
-        param([string]$query)
-        & "C:\Program Files\Mozilla Firefox\firefox.exe" "https://www.duckduckgo.com/search?q=$query"
-    }
+    param(
+        [string]$query
+    )
+    $encodedQuery = [uri]::EscapeDataString($query)
+    $searchUrl = "https://duckduckgo.com/?q=$encodedQuery"
+    Start-Process "firefox.exe" -ArgumentList $searchUrl
+}
 
 function icc {
-    param([string]$query)
-    & "C:\Program Files\IceCat\icecat.exe" "https://www.duckduckgo.com/search?q=$query"
-    }
+    param(
+        [string]$query
+    )
+    $encodedQuery = [uri]::EscapeDataString($query)
+    $searchUrl = "https://duckduckgo.com/?q=$encodedQuery"
+    Start-Process "C:\Program Files\IceCat\icecat.exe" -ArgumentList $searchUrl
+}
 
 function tor {& "C:\Users\Mkh\OneDrive\Desktop\Browser\Tor Browser\Browser\firefox.exe"}
 
+function openlib {
+    param(
+        [string]$query
+    )
+    $encodedQuery = [uri]::EscapeDataString($query)
+    $searchUrl = "https://openlibrary.org/search?q=$encodedQuery"
+    Start-Process "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" -ArgumentList $searchUrl
+}
+
+function mbook {
+    param(
+        [string]$query
+    )
+    $encodedQuery = [uri]::EscapeDataString($query)
+    $searchUrl = "https://manybooks.net/search-book?search=$encodedQuery"
+    Start-Process "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" -ArgumentList $searchUrl
+}
 
 function prompt {
     $host.ui.RawUI.WindowTitle = "$pwd"
@@ -340,6 +394,35 @@ function ws {
     }
 }
 
+# Has Problem!
+# function mtx {
+#     Param (
+#         [string]$DownloadLink
+#     )
+#
+#     $motrixScriptPath = Join-Path $HOME ".motrix.ahk"
+#     $autoHotkeyPath = "C:\Program Files\AutoHotkey\UX\AutoHotkeyUX.exe"
+#
+#     @"
+# Run, "C:\Users\Mkh\scoop\apps\motrix\current\Motrix.exe"
+# WinWaitActive, Motrix
+# Sleep, 1000
+# Send, ^n
+# Sleep, 500
+# SendInput, %DownloadLink%
+# Sleep, 500
+# Send, {Enter}
+# "@ | Set-Content -Path $motrixScriptPath
+#
+#     if (Test-Path $autoHotkeyPath) {
+#         Start-Process $autoHotkeyPath -ArgumentList $motrixScriptPath
+#     }
+#     else {
+#         Write-Host "AutoHotkey path not found. Please provide the correct path."
+#         # Add code here to handle the error condition
+#     }
+# }
+
 Function pyt {
     $scriptPath = "C:\Users\Mkh\pytranslater.py"
     Start-Process python -ArgumentList $scriptPath -NoNewWindow -Wait
@@ -364,5 +447,15 @@ Function greetBot {
 
 Function cmdChat {
     $scriptPath = "C:\Users\Mkh\cmdChat.py"
+    Start-Process python -ArgumentList $scriptPath -NoNewWindow -Wait
+}
+
+Function hashed {
+    $scriptPath = "C:\Users\Mkh\hashed.py"
+    Start-Process python -ArgumentList $scriptPath -NoNewWindow -Wait
+}
+
+Function fencrypt {
+    $scriptPath = "C:\Users\Mkh\hashed.py"
     Start-Process python -ArgumentList $scriptPath -NoNewWindow -Wait
 }
